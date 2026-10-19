@@ -91,7 +91,7 @@
 [Copilot Agent 프롬프트 — freeform 버전]
 좌클릭하면 칸을 열고, 우클릭하면 깃발을 꽂는 지뢰찾기 게임을 만들어줘.
 9x9 격자에 지뢰 10개, 타이머와 남은 지뢰 수를 보여줘.
-Vanilla JS로 만들고 파일 하나(index.html)에 담아줘.
+Vanilla JS로 만들고 HTML, CSS, JavaScript를 각각 index.html, style.css, script.js 파일로 나눠줘.
 ```
 
 ```

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f5ef">
+    <title>지뢰찾기</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="game">
+      <header class="game-header">
+        <div class="title-group">
+          <span class="eyebrow">CLASSIC MINESWEEPER</span>
+          <h1>지뢰찾기<span class="title-dot">.</span></h1>
+          <p class="subtitle">차분히 살펴보고, 안전한 칸을 찾아보세요.</p>
+        </div>
+        <button class="restart-button" id="restart-button" type="button" aria-label="새 게임 시작">
+          <span aria-hidden="true">↻</span>
+          <span>새 게임</span>
+        </button>
+      </header>
+
+      <section class="game-panel" aria-label="지뢰찾기 게임">
+        <div class="difficulty-row">
+          <label for="difficulty-select">난이도</label>
+          <select id="difficulty-select">
+            <option value="beginner">초급 · 9 × 9</option>
+            <option value="intermediate">중급 · 16 × 16</option>
+            <option value="advanced">고급 · 30 × 16</option>
+          </select>
+        </div>
+        <div class="status-bar">
+          <div class="status-card mine-card">
+            <span class="status-icon" aria-hidden="true">⚑</span>
+            <div>
+              <span class="status-label">남은 지뢰</span>
+              <strong class="status-value" id="mine-count" aria-live="polite">10</strong>
+            </div>
+          </div>
+          <div class="status-card timer-card">
+            <span class="status-icon" aria-hidden="true">◷</span>
+            <div>
+              <span class="status-label">경과 시간</span>
+              <strong class="status-value timer-value" id="timer">00:00</strong>
+            </div>
+          </div>
+          <div class="status-card best-card">
+            <span class="status-icon" aria-hidden="true">★</span>
+            <div>
+              <span class="status-label">최고 기록</span>
+              <strong class="status-value timer-value" id="best-time">--:--</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <div
+            class="board"
+            id="board"
+            role="group"
+            aria-label="9행 9열 지뢰찾기 보드"
+            aria-describedby="game-message"
+          ></div>
+        </div>
+
+        <div class="game-footer">
+          <p class="game-message" id="game-message" aria-live="polite">칸을 열어 게임을 시작하세요.</p>
+          <p class="instructions">왼쪽 클릭: 칸 열기 <span aria-hidden="true">·</span> 오른쪽 클릭: 깃발 표시</p>
+        </div>
+      </section>
+      <p class="game-note">9 × 9 보드 <span aria-hidden="true">·</span> 지뢰 10개</p>
+    </main>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+  </body>
+</html>
