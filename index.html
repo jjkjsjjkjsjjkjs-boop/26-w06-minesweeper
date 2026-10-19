@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f3f5ef">
+    <meta name="theme-color" content="#c0c0c0">
     <title>지뢰찾기</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
@@ -11,47 +11,29 @@
   <body>
     <main class="game">
       <header class="game-header">
-        <div class="title-group">
-          <span class="eyebrow">CLASSIC MINESWEEPER</span>
-          <h1>지뢰찾기<span class="title-dot">.</span></h1>
-          <p class="subtitle">차분히 살펴보고, 안전한 칸을 찾아보세요.</p>
-        </div>
-        <button class="restart-button" id="restart-button" type="button" aria-label="새 게임 시작">
-          <span aria-hidden="true">↻</span>
-          <span>새 게임</span>
-        </button>
-      </header>
-
-      <section class="game-panel" aria-label="지뢰찾기 게임">
-        <div class="difficulty-row">
-          <label for="difficulty-select">난이도</label>
+        <h1>지뢰찾기</h1>
+        <label class="difficulty-control" for="difficulty-select">
+          난이도
           <select id="difficulty-select">
             <option value="beginner">초급 · 9 × 9</option>
             <option value="intermediate">중급 · 16 × 16</option>
             <option value="advanced">고급 · 30 × 16</option>
           </select>
-        </div>
+        </label>
+      </header>
+
+      <section class="game-panel" aria-label="지뢰찾기 게임">
         <div class="status-bar">
-          <div class="status-card mine-card">
-            <span class="status-icon" aria-hidden="true">⚑</span>
-            <div>
-              <span class="status-label">남은 지뢰</span>
-              <strong class="status-value" id="mine-count" aria-live="polite">10</strong>
-            </div>
+          <div class="counter" aria-label="남은 지뢰">
+            <span class="sr-only">남은 지뢰</span>
+            <strong id="mine-count" aria-live="polite">010</strong>
           </div>
-          <div class="status-card timer-card">
-            <span class="status-icon" aria-hidden="true">◷</span>
-            <div>
-              <span class="status-label">경과 시간</span>
-              <strong class="status-value timer-value" id="timer">00:00</strong>
-            </div>
-          </div>
-          <div class="status-card best-card">
-            <span class="status-icon" aria-hidden="true">★</span>
-            <div>
-              <span class="status-label">최고 기록</span>
-              <strong class="status-value timer-value" id="best-time">--:--</strong>
-            </div>
+          <button class="restart-button" id="restart-button" type="button" aria-label="새 게임 시작">
+            🙂
+          </button>
+          <div class="counter" aria-label="경과 시간">
+            <span class="sr-only">경과 시간</span>
+            <strong id="timer">000</strong>
           </div>
         </div>
 
@@ -67,10 +49,13 @@
 
         <div class="game-footer">
           <p class="game-message" id="game-message" aria-live="polite">칸을 열어 게임을 시작하세요.</p>
-          <p class="instructions">왼쪽 클릭: 칸 열기 <span aria-hidden="true">·</span> 오른쪽 클릭: 깃발 표시</p>
+          <p class="instructions">좌클릭: 열기 · 우클릭: 깃발 → ? → 해제</p>
         </div>
       </section>
-      <p class="game-note">9 × 9 보드 <span aria-hidden="true">·</span> 지뢰 10개</p>
+      <p class="game-note">
+        <span>9 × 9 보드 · 지뢰 10개</span>
+        <span>최고 기록 <strong id="best-time">--:--</strong></span>
+      </p>
     </main>
     <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
   </body>

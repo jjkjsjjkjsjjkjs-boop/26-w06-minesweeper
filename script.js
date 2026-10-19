@@ -53,9 +53,10 @@ function getNeighbors(index) {
 }
 
 function placeMines(firstIndex) {
+  const safeIndices = new Set([firstIndex, ...getNeighbors(firstIndex)]);
   const availableIndices = cells
     .map((_, index) => index)
-    .filter((index) => index !== firstIndex);
+    .filter((index) => !safeIndices.has(index));
 
   for (let index = availableIndices.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -87,7 +88,7 @@ function formatTime(seconds) {
 }
 
 function updateTimer() {
-  timerElement.textContent = formatTime(elapsedSeconds);
+  timerElement.textContent = Math.min(elapsedSeconds, 999).toString().padStart(3, "0");
 }
 
 function startTimer() {
@@ -109,7 +110,9 @@ function stopTimer() {
 }
 
 function updateMineCount() {
-  mineCountElement.textContent = difficulty.mines - flaggedCount;
+  const remaining = difficulty.mines - flaggedCount;
+  mineCountElement.textContent =
+    remaining < 0 ? `-${Math.abs(remaining).toString().padStart(2, "0")}` : remaining.toString().padStart(3, "0");
 }
 
 function renderCell(cell) {
@@ -130,10 +133,13 @@ function renderCell(cell) {
   );
 
   if (cell.isFlagged && !cell.isRevealed) {
-    element.textContent = "⚑";
+    element.textContent = "🚩";
     element.setAttribute("aria-label", `${cell.index + 1}번 칸, 깃발 표시됨`);
+  } else if (cell.isQuestioned && !cell.isRevealed) {
+    element.textContent = "?";
+    element.setAttribute("aria-label", `${cell.index + 1}번 칸, 물음표 표시됨`);
   } else if (cell.isRevealed && cell.isMine) {
-    element.textContent = "✹";
+    element.textContent = "💣";
     element.setAttribute("aria-label", `${cell.index + 1}번 칸, 지뢰`);
   } else if (cell.isRevealed && cell.isWrong) {
     element.textContent = "×";
@@ -160,6 +166,11 @@ function setMessage(text, result) {
   messageElement.textContent = text;
   messageElement.classList.toggle("is-result", result === "won");
   messageElement.classList.toggle("is-loss", result === "lost");
+}
+
+function setFace(face, label) {
+  restartButton.textContent = face;
+  restartButton.setAttribute("aria-label", label);
 }
 
 function loadBestTime() {
@@ -260,6 +271,7 @@ function finishGame(result) {
   stopTimer();
 
   if (result === "lost") {
+    setFace("😵", "패배했습니다. 새 게임 시작");
     for (const cell of cells) {
       if (cell.isMine) {
         cell.isRevealed = true;
@@ -274,6 +286,7 @@ function finishGame(result) {
   }
 
   const record = updateBestTime();
+  setFace("😎", "승리했습니다. 새 게임 시작");
   if (record.isRecord) {
     celebrateRecord();
     setMessage(
@@ -363,8 +376,16 @@ function toggleFlag(index) {
     return;
   }
 
-  cell.isFlagged = !cell.isFlagged;
-  flaggedCount += cell.isFlagged ? 1 : -1;
+  if (cell.isFlagged) {
+    cell.isFlagged = false;
+    cell.isQuestioned = true;
+    flaggedCount -= 1;
+  } else if (cell.isQuestioned) {
+    cell.isQuestioned = false;
+  } else {
+    cell.isFlagged = true;
+    flaggedCount += 1;
+  }
   updateMineCount();
   renderCell(cell);
 }
@@ -375,6 +396,7 @@ function startNewGame() {
   revealedCount = 0;
   elapsedSeconds = 0;
   gameState = "ready";
+  setFace("🙂", "새 게임 시작");
   cells = [];
   boardElement.replaceChildren();
   boardElement.style.setProperty("--columns", difficulty.columns);
@@ -408,12 +430,16 @@ function startNewGame() {
       isMine: false,
       isRevealed: false,
       isFlagged: false,
+      isQuestioned: false,
       isWrong: false,
       neighborMines: 0,
     };
 
     element.addEventListener("click", () => revealCell(index));
     element.addEventListener("pointerdown", (event) => {
+      if (event.button === 0 && gameState !== "won" && gameState !== "lost") {
+        setFace("😮", "새 게임 시작");
+      }
       if (event.button === 2) {
         event.preventDefault();
         if (event.buttons === 3) {
@@ -440,4 +466,14 @@ difficultySelect.addEventListener("change", () => {
 });
 restartButton.addEventListener("click", startNewGame);
 window.addEventListener("resize", resizeConfettiCanvas);
+window.addEventListener("pointerup", () => {
+  if (gameState === "ready" || gameState === "playing") {
+    setFace("🙂", "새 게임 시작");
+  }
+});
+window.addEventListener("pointercancel", () => {
+  if (gameState === "ready" || gameState === "playing") {
+    setFace("🙂", "새 게임 시작");
+  }
+});
 startNewGame();
