@@ -260,7 +260,7 @@
         counterElement.setAttribute("aria-label", `남은 지뢰 수 ${remaining}`);
         renderTimer();
         faceElement.textContent = game.status === "won" ? "😎" : game.status === "lost" ? "😵" : "🙂";
-        boardElement.style.gridTemplateColumns = `repeat(${game.width}, 30px)`;
+        boardElement.style.setProperty("--columns", game.width);
         boardElement.setAttribute("aria-rowcount", String(game.height));
         boardElement.setAttribute("aria-colcount", String(game.width));
         boardElement.replaceChildren();
