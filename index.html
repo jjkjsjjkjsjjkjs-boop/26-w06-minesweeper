@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c0c0c0">
+  <title>지뢰찾기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="window">
+    <header class="titlebar"><span class="titlebar-icon" aria-hidden="true">💣</span> 지뢰찾기</header>
+    <div class="window-content">
+      <p class="intro">칸을 열어 지뢰를 피해 보세요. 숫자는 주변 8칸에 있는 지뢰의 수입니다.</p>
+      <div class="toolbar">
+        <nav class="levels" aria-label="난이도 선택">
+          <button class="classic-button active" type="button" data-level="beginner" aria-pressed="true">초급</button>
+          <button class="classic-button" type="button" data-level="intermediate" aria-pressed="false">중급</button>
+          <button class="classic-button" type="button" data-level="expert" aria-pressed="false">고급</button>
+        </nav>
+        <form class="custom-form" id="custom-form">
+          <label class="field">가로<input id="custom-width" type="number" min="5" max="30" value="12" required></label>
+          <label class="field">세로<input id="custom-height" type="number" min="5" max="24" value="12" required></label>
+          <label class="field">지뢰<input id="custom-mines" type="number" min="1" max="575" value="20" required></label>
+          <button class="classic-button" type="submit">직접 설정</button>
+        </form>
+      </div>
+
+      <section class="bevel" aria-label="게임">
+        <div class="dashboard">
+          <output class="digital" id="mine-counter" aria-label="남은 지뢰 수">010</output>
+          <button class="classic-button face" id="reset-button" type="button" aria-label="새 게임">🙂</button>
+          <output class="digital" id="timer" aria-label="경과 시간">000</output>
+        </div>
+        <div class="board-wrap">
+          <div class="board" id="board" role="grid" aria-label="지뢰찾기 게임판"></div>
+        </div>
+        <p class="status" id="status" aria-live="polite">첫 칸을 열어 게임을 시작하세요.</p>
+      </section>
+
+      <div class="bottom-row">
+        <section class="panel">
+          <h2>게임 방법</h2>
+          <p>왼쪽 클릭으로 칸을 열고, 오른쪽 클릭으로 깃발을 꽂거나 빼세요. 첫 클릭은 항상 안전합니다. 지뢰가 아닌 모든 칸을 열면 승리합니다.</p>
+        </section>
+        <section class="panel">
+          <h2>최고 기록</h2>
+          <ol class="scores" id="scores" aria-label="난이도별 최고 기록"></ol>
+        </section>
+      </div>
+    </div>
+    <footer class="footer">기록과 진행 상황은 이 브라우저에 자동 저장됩니다.</footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
